@@ -39,6 +39,8 @@ func (p *product) Create(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, response.Err("debe tener por lo menos una categoria", nil))
 	}
 
+	body.Amount = 1
+
 	result, err := p.store.Create(body)
 	if err != nil {
 		if mongo.IsDuplicateKeyError(err) {
