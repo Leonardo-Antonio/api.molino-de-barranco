@@ -3,6 +3,7 @@ module github.com/Leonardo-Antonio/api-molino-de-barranco
 go 1.17
 
 require (
+	github.com/Leonardo-Antonio/goemail v0.0.0-20211231214035-7b436375e2de // indirect
 	github.com/Leonardo-Antonio/validmor v1.0.1 // indirect
 	github.com/go-stack/stack v1.8.0 // indirect
 	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect

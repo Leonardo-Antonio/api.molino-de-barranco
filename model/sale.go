@@ -20,6 +20,7 @@ type (
 		Update(_sale *entity.Sale) (*mongo.UpdateResult, error)
 		FindAll(_status bool) (entity.Sales, error)
 		DeleteById(_id primitive.ObjectID) (*mongo.UpdateResult, error)
+		FindById(_id primitive.ObjectID) (entity.Sale, error)
 	}
 )
 
@@ -68,6 +69,20 @@ func (s *sale) FindAll(_status bool) (entity.Sales, error) {
 	}
 
 	return *sales, nil
+}
+
+func (s *sale) FindById(_id primitive.ObjectID) (entity.Sale, error) {
+	order := new(entity.Sale)
+	if err := s.collection.FindOne(
+		context.TODO(),
+		bson.M{
+			"_id":    _id,
+			"active": true,
+		}).Decode(&order); err != nil {
+		return entity.Sale{}, err
+	}
+
+	return *order, nil
 }
 
 func (s *sale) DeleteById(_id primitive.ObjectID) (*mongo.UpdateResult, error) {

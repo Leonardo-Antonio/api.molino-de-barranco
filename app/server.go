@@ -30,6 +30,7 @@ func (s *server) Router(_db *mongo.Database) {
 	router.NewProduct(s.app, model.NewProduct(_db))
 	router.NewCategory(s.app, model.NewCategory(_db))
 	router.NewSale(s.app, model.NewSale(_db))
+	router.NewClient(s.app)
 }
 
 func (s *server) Listeing() {

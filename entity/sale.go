@@ -8,7 +8,7 @@ import (
 
 type Sale struct {
 	Id         primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
-	Products   []string           `bson:"products,omitempty" json:"products,omitempty"`
+	Products   []Product          `bson:"products,omitempty" json:"products,omitempty"`
 	InfoClient Client             `bson:"info_client,omitempty" json:"info_client,omitempty"`
 	Type       string             `bson:"type,omitempty" json:"type,omitempty"`
 	Nick       string             `bson:"nick,omitempty" json:"nick,omitempty" validmor:"required"`

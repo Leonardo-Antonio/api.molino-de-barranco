@@ -16,4 +16,5 @@ func NewSale(_app *echo.Echo, _store model.Isale) {
 	group.PUT("", controller.Update)
 	group.GET("", controller.GetAll)
 	group.DELETE("/:id", controller.DeleteById)
+	group.GET("/search/:id", controller.GetById)
 }
