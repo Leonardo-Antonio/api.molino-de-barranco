@@ -94,6 +94,15 @@ func (s *sale) GetAll(c echo.Context) error {
 	return c.JSON(http.StatusOK, response.Success("ok", products))
 }
 
+func (s *sale) GetAllByDate(c echo.Context) error {
+	products, err := s.store.FindAllByDate(c.Param("date"))
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, response.Err(err.Error(), nil))
+	}
+
+	return c.JSON(http.StatusOK, response.Success("ok", products))
+}
+
 func (s *sale) GetById(c echo.Context) error {
 	id, err := primitive.ObjectIDFromHex(c.Param("id"))
 	if err != nil {
@@ -101,6 +110,20 @@ func (s *sale) GetById(c echo.Context) error {
 	}
 
 	order, err := s.store.FindById(id)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, response.Err(err.Error(), nil))
+	}
+
+	return c.JSON(http.StatusOK, response.Success("okas", order))
+}
+
+func (s *sale) GetByIdTicket(c echo.Context) error {
+	id, err := primitive.ObjectIDFromHex(c.Param("id"))
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, response.Err("el id ingresado no es valido o no existe", nil))
+	}
+
+	order, err := s.store.FindByIdTicket(id)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, response.Err(err.Error(), nil))
 	}

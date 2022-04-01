@@ -17,4 +17,6 @@ func NewSale(_app *echo.Echo, _store model.Isale) {
 	group.GET("", controller.GetAll)
 	group.DELETE("/:id", controller.DeleteById)
 	group.GET("/search/:id", controller.GetById)
+	group.GET("/search/ticket/:id", controller.GetByIdTicket)
+	group.GET("/date/register/money/:date", controller.GetAllByDate)
 }

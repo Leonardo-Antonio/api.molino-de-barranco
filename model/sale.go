@@ -21,6 +21,8 @@ type (
 		FindAll(_status bool) (entity.Sales, error)
 		DeleteById(_id primitive.ObjectID) (*mongo.UpdateResult, error)
 		FindById(_id primitive.ObjectID) (entity.Sale, error)
+		FindByIdTicket(_id primitive.ObjectID) (entity.Sale, error)
+		FindAllByDate(date string) (entity.Sales, error)
 	}
 )
 
@@ -30,7 +32,7 @@ func NewSale(_db *mongo.Database) *sale {
 
 func (s *sale) Create(_sale *entity.Sale) (*mongo.InsertOneResult, error) {
 	_sale.Active = true
-	_sale.CreatedAt = time.Now()
+	_sale.CreatedAt = time.Now().Format("2006-02-01")
 	_sale.Status = "pedido"
 	result, err := s.collection.InsertOne(context.TODO(), _sale)
 	if err != nil {
@@ -71,6 +73,24 @@ func (s *sale) FindAll(_status bool) (entity.Sales, error) {
 	return *sales, nil
 }
 
+func (s *sale) FindAllByDate(date string) (entity.Sales, error) {
+	cursor, err := s.collection.Find(context.TODO(), bson.M{
+		"created_at": date,
+	})
+
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(context.TODO())
+
+	sales := new(entity.Sales)
+	if err := cursor.All(context.TODO(), sales); err != nil {
+		return nil, err
+	}
+
+	return *sales, nil
+}
+
 func (s *sale) FindById(_id primitive.ObjectID) (entity.Sale, error) {
 	order := new(entity.Sale)
 	if err := s.collection.FindOne(
@@ -78,6 +98,20 @@ func (s *sale) FindById(_id primitive.ObjectID) (entity.Sale, error) {
 		bson.M{
 			"_id":    _id,
 			"active": true,
+		}).Decode(&order); err != nil {
+		return entity.Sale{}, err
+	}
+
+	return *order, nil
+}
+
+func (s *sale) FindByIdTicket(_id primitive.ObjectID) (entity.Sale, error) {
+	order := new(entity.Sale)
+	if err := s.collection.FindOne(
+		context.TODO(),
+		bson.M{
+			"_id":    _id,
+			"active": false,
 		}).Decode(&order); err != nil {
 		return entity.Sale{}, err
 	}
