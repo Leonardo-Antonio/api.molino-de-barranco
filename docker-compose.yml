@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  api-molino-barranco:
+    image: leo2001/api-molino-barranco:v2.1
+    restart: always
+    environment:
+      PORT: ${PORT}
+      MONGO_URI: ${MONGO_URI}
+      DB_NAME: ${DB_NAME}
+      EMAIL: ${EMAIL}
+      PASSWORD: ${PASSWORD} 
+    ports:
+      - 8000:8000
+      
